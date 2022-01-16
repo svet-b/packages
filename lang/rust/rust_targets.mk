@@ -38,7 +38,7 @@ ifeq ($(CONFIG_ARCH), "arm")
   endif
 endif
 
-#RUSTC_TARGET_ARCH:=$(ARCH)-unknown-linux-$(patsubst "%",%,$(RUST_TARGET_SUFFIX))
-RUSTC_TARGET_ARCH:=$(REAL_GNU_TARGET_NAME)
+RUSTC_TARGET_ARCH:=$(ARCH)-unknown-linux-$(patsubst "%",%,$(RUST_TARGET_SUFFIX))
+#RUSTC_TARGET_ARCH:=$(REAL_GNU_TARGET_NAME)
 #CARGO_HOME:=$(TOOLCHAIN_DIR)
 
