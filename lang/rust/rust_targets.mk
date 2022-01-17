@@ -20,10 +20,10 @@ ifeq ($(CONFIG_ARCH), "arm")
   endif
 
   # If the CPU_TYPE contains neon/vfp flags, set hf
-  ifeq ($(CONFIG_CPU_TYPE), $(filter vfp%, $(CONFIG_CPU_TYPE)))
+  ifneq ($(findstring vfp, $(CONFIG_CPU_TYPE)),)
     RUST_TARGET_SUFFIX:="musleabihf"
   endif
-  ifeq ($(CONFIG_CPU_TYPE), $(filter neon%, $(CONFIG_CPU_TYPE)))
+  ifneq ($(findstring neon, $(CONFIG_CPU_TYPE)),)
     RUST_TARGET_SUFFIX:="musleabihf"
   endif
 
