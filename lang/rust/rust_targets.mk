@@ -7,6 +7,10 @@ ifeq ($(CONFIG_ARCH), $(filter "mips64%", $(CONFIG_ARCH)))
   RUST_TARGET_SUFFIX:="muslabi64"
 endif
 
+ifeq ($(CONFIG_ARCH), "mips")
+  RUST_TARGET_SUFFIX:="musl"
+endif
+
 ifeq ($(CONFIG_ARCH), "arm")
   ifeq ($(CONFIG_arm_v7), y)
     ARCH=armv7
@@ -20,10 +24,10 @@ ifeq ($(CONFIG_ARCH), "arm")
   endif
 
   # If the CPU_TYPE contains neon/vfp flags, set hf
-  ifeq ($(CONFIG_CPU_TYPE), $(filter vfp%, $(CONFIG_CPU_TYPE)))
+  ifneq ($(findstring vfp, $(CONFIG_CPU_TYPE)),)
     RUST_TARGET_SUFFIX:="musleabihf"
   endif
-  ifeq ($(CONFIG_CPU_TYPE), $(filter neon%, $(CONFIG_CPU_TYPE)))
+  ifneq ($(findstring neon, $(CONFIG_CPU_TYPE)),)
     RUST_TARGET_SUFFIX:="musleabihf"
   endif
 
