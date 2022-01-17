@@ -7,6 +7,12 @@ ifeq ($(CONFIG_ARCH), $(filter "mips64%", $(CONFIG_ARCH)))
   RUST_TARGET_SUFFIX:="muslabi64"
 endif
 
+ifeq ($(CONFIG_ARCH), "mips")
+  RUST_TARGET_SUFFIX:="musl"
+endif
+
+ifeq ($(CONFIG_ARCH), "arm")
+
 ifeq ($(CONFIG_ARCH), "arm")
   ifeq ($(CONFIG_arm_v7), y)
     ARCH=armv7
