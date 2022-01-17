@@ -12,8 +12,6 @@ ifeq ($(CONFIG_ARCH), "mips")
 endif
 
 ifeq ($(CONFIG_ARCH), "arm")
-
-ifeq ($(CONFIG_ARCH), "arm")
   ifeq ($(CONFIG_arm_v7), y)
     ARCH=armv7
   endif
