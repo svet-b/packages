@@ -81,7 +81,7 @@ ifneq ($(IS_CARGO_INSTALLED), true)
   
     override define Host/Compile
 		cd $(HOST_BUILD_DIR) && \
-		$(PYTHON) x.py --config ./config.toml dist
+		$(PYTHON) x.py build -i --config ./config.toml library/std
 		
 		$(call Host/PackageDist)
     endef
@@ -128,7 +128,7 @@ ifneq ($(IS_RUSTC_INSTALLED), true)
   
     override define Host/Compile
 		cd $(HOST_BUILD_DIR) && \
-		$(PYTHON) x.py --config ./config.toml dist
+		$(PYTHON) x.py build -i --config ./config.toml library/std
 		
 		$(call Host/PackageDist)
     endef
