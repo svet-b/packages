@@ -18,7 +18,7 @@ define Build/Configure
 	  --sysconfdir=$(CONFIGURE_PREFIX)/etc \
 	  --datadir=$(CONFIGURE_PREFIX)/share \
 	  --mandir=$(CONFIGURE_PREFIX)/man \
-	  --release-channel=nightly \
+	  --release-channel=stable \
 	  --set=llvm.link-shared=true \
 	  --enable-lld \
 	  --enable-vendor \
