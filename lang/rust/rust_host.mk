@@ -74,7 +74,7 @@ ifneq ($(IS_CARGO_INSTALLED), true)
 		# Required because OpenWrt Default CONFIGURE_ARGS contain extra
 		# args that cause errors
 		cd $(HOST_BUILD_DIR) && \
-		  ./configure ${RUST_CONFIGURE_ARGS}
+		  ./configure $(RUST_CONFIGURE_ARGS)
     endef
   
     override define Host/Compile
@@ -118,7 +118,7 @@ ifneq ($(IS_RUSTC_INSTALLED), true)
 		# Required because OpenWrt Default CONFIGURE_ARGS contain extra
 		# args that cause errors
 		cd $(HOST_BUILD_DIR) && \
-		  ./configure ${RUST_CONFIGURE_ARGS}
+		  ./configure $(RUST_CONFIGURE_ARGS)
     endef
   
     override define Host/Compile
