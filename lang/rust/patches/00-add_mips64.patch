@@ -1,0 +1,72 @@
+From 2e0f33744f8f67afeecdc4963bccc7942d20582d Mon Sep 17 00:00:00 2001
+From: Donald Hoskins <grommish@gmail.com>
+Date: Mon, 3 Jan 2022 02:48:02 -0500
+Subject: [PATCH] rustc_target: mips64-openwrt-linux-musl - Add Tier 3 target
+
+Tier 3 tuple for Mips64 OpenWrt toolchain.
+
+Signed-off-by: Donald Hoskins <grommish@gmail.com>
+---
+ .../src/spec/mips64_openwrt_linux_musl.rs     | 26 +++++++++++++++++++
+ compiler/rustc_target/src/spec/mod.rs         |  2 ++
+ src/doc/rustc/src/platform-support.md         |  1 +
+ 3 files changed, 29 insertions(+)
+ create mode 100644 compiler/rustc_target/src/spec/mips64_openwrt_linux_musl.rs
+
+diff --git a/compiler/rustc_target/src/spec/mips64_openwrt_linux_musl.rs b/compiler/rustc_target/src/spec/mips64_openwrt_linux_musl.rs
+new file mode 100644
+index 0000000000000..1199ed44202f9
+--- /dev/null
++++ b/compiler/rustc_target/src/spec/mips64_openwrt_linux_musl.rs
+@@ -0,0 +1,26 @@
++/// A target tuple for OpenWrt MIPS64 targets
++///
++use crate::abi::Endian;
++use crate::spec::{Target, TargetOptions};
++
++pub fn target() -> Target {
++    let mut base = super::linux_musl_base::opts();
++    base.cpu = "mips64r2".to_string();
++    base.features = "+mips64r2".to_string();
++    base.max_atomic_width = Some(64);
++    base.crt_static_default = false;
++
++    Target {
++        // LLVM doesn't recognize "muslabi64" yet.
++        llvm_target: "mips64-unknown-linux-musl".to_string(),
++        pointer_width: 64,
++        data_layout: "E-m:e-i8:8:32-i16:16:32-i64:64-n32:64-S128".to_string(),
++        arch: "mips64".to_string(),
++        options: TargetOptions {
++            abi: "abi64".to_string(),
++            endian: Endian::Big,
++            mcount: "_mcount".to_string(),
++            ..base
++        },
++    }
++}
+diff --git a/compiler/rustc_target/src/spec/mod.rs b/compiler/rustc_target/src/spec/mod.rs
+index 43913183694e0..fee40c4c6c95e 100644
+--- a/compiler/rustc_target/src/spec/mod.rs
++++ b/compiler/rustc_target/src/spec/mod.rs
+@@ -1014,6 +1014,8 @@ supported_targets! {
+     ("armv7-unknown-linux-uclibceabihf", armv7_unknown_linux_uclibceabihf),
+ 
+     ("x86_64-unknown-none", x86_64_unknown_none),
++
++    ("mips64-openwrt-linux-musl", mips64_openwrt_linux_musl),
+ }
+ 
+ /// Warnings encountered when parsing the target `json`.
+diff --git a/src/doc/rustc/src/platform-support.md b/src/doc/rustc/src/platform-support.md
+index f4f659ffa273e..d225701087d4d 100644
+--- a/src/doc/rustc/src/platform-support.md
++++ b/src/doc/rustc/src/platform-support.md
+@@ -244,6 +244,7 @@ target | std | host | notes
+ `i686-wrs-vxworks` | ? |  |
+ `m68k-unknown-linux-gnu` | ? |  | Motorola 680x0 Linux
+ `mips-unknown-linux-uclibc` | ✓ |  | MIPS Linux with uClibc
++`mips64-openwrt-linux-musl` | ? |  | OpenWrt
+ `mipsel-sony-psp` | * |  | MIPS (LE) Sony PlayStation Portable (PSP)
+ `mipsel-unknown-linux-uclibc` | ✓ |  | MIPS (LE) Linux with uClibc
+ `mipsel-unknown-none` | * |  | Bare MIPS (LE) softfloat
