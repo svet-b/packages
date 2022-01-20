@@ -83,7 +83,6 @@ RUST_COMMOM_ARGS := \
   --tools=cargo \
   --disable-docs \
   --enable-vendor \
-  --enable-lld \
   --set=llvm.download-ci-llvm="if-available" \
   --enable-missing-tools \
   --release-channel=nightly \
