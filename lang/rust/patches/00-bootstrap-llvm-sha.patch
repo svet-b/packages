@@ -17,9 +17,9 @@
 -                "{}/src/version".format(top_level)
 -            ]).decode(sys.getdefaultencoding()).strip()
 +            print(os.environ)
-+            if 'LLVM_GIT_SHA' in os.environ:
++            if True: # 'LLVM_GIT_SHA' in os.environ:
 +                print('Using LLVM hash from environment')
-+                llvm_sha = os.environ['LLVM_GIT_SHA']
++                llvm_sha = 'faea820643f9acec1bb787941063393f9508a775' #os.environ['LLVM_GIT_SHA']
 +            else:
 +                top_level = subprocess.check_output([
 +                    "git", "rev-parse", "--show-toplevel",
