@@ -1,6 +1,6 @@
 --- a/src/bootstrap/bootstrap.py
 +++ b/src/bootstrap/bootstrap.py
-@@ -465,18 +465,21 @@ class RustBuild(object):
+@@ -465,18 +465,23 @@ class RustBuild(object):
              #
              # This works even in a repository that has not yet initialized
              # submodules.
@@ -16,7 +16,9 @@
 -                # the LLVM shared object file is named `LLVM-12-rust-{version}-nightly`
 -                "{}/src/version".format(top_level)
 -            ]).decode(sys.getdefaultencoding()).strip()
++            print(os.environ)
 +            if 'LLVM_GIT_SHA' in os.environ:
++                print('Using LLVM hash from environment')
 +                llvm_sha = os.environ['LLVM_GIT_SHA']
 +            else:
 +                top_level = subprocess.check_output([
@@ -34,4 +36,3 @@
              llvm_assertions = self.get_toml('assertions', 'llvm') == 'true'
              llvm_root = self.llvm_root()
              llvm_lib = os.path.join(llvm_root, "lib")
-
