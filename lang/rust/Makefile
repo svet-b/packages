@@ -13,7 +13,7 @@
 include $(TOPDIR)/rules.mk
 
 PKG_NAME:=rust
-PKG_VERSION:=1.57.0
+PKG_VERSION:=1.58.0
 PKG_RELEASE:=1
 
 PKG_LICENSE:=Apache-2.0 MIT
@@ -21,9 +21,9 @@ PKG_LICENSE_FILES:=LICENSE-APACHE LICENSE-MIT
 
 PKG_SOURCE_PROTO:=git
 PKG_SOURCE_URL:=https://github.com/rust-lang/rust.git
-PKG_SOURCE_DATE:=2021-12-02
-PKG_SOURCE_VERSION:=dde825db464b08d6f572766579dfb629b837368c
-PKG_MIRROR_HASH:=de66268e13fa9cf3222d10ae3249dae88ca37f8b7aa0a5067003ef14fa2108f5
+PKG_SOURCE_DATE:=2022-01-11
+PKG_SOURCE_VERSION:=02072b482a8b5357f7fb5e5637444ae30e423c40
+PKG_MIRROR_HASH:=skip
 PKG_BUILD_PARALLEL:=1
 
 include $(INCLUDE_DIR)/cmake.mk
@@ -42,6 +42,12 @@ CONFIG_HOST_SUFFIX:=$(shell cut -d"-" -f4 <<<"$(GNU_HOST_NAME)")
 RUSTC_HOST_ARCH:=$(HOST_ARCH)-unknown-linux-$(CONFIG_HOST_SUFFIX)
 RUSTC_TARGET_ARCH:=$(REAL_GNU_TARGET_NAME)
 CARGO_HOME:=$(STAGING_DIR_HOST)/.cargo
+
+# Commit hash for LLVM binary from CI
+# Obtained by running
+# git rev-list --author=bors@rust-lang.org -n1 --first-parent HEAD -- src/llvm-project src/bootstrap/download-ci-llvm-stamp src/version
+# from top level of checked out git repo
+LLVM_GIT_SHA:=faea820643f9acec1bb787941063393f9508a775
 
 # Rust Temp Directory
 RUST_TMP_DIR:=$(TMP_DIR)/rust-install
@@ -74,14 +80,12 @@ RUST_COMMOM_ARGS := \
   --build=$(RUSTC_HOST_ARCH) \
   --dist-compression-formats=xz \
   --enable-full-tools \
-  --enable-llvm-link-shared \
-  --enable-llvm-plugins \
+  --tools=cargo \
+  --disable-docs \
+  --enable-vendor \
+  --enable-lld \
+  --set=llvm.download-ci-llvm="if-available" \
   --enable-missing-tools \
-  --enable-ninja \
-  --enable-optimize \
-  --enable-optimize-llvm \
-  --enable-parallel-compiler \
-  --enable-sanitizers \
   --release-channel=nightly \
   ${MUSL_CONFIGURE_ARGS}
 
@@ -141,7 +145,7 @@ endef
 # Makes and then packages the dist artifacts
 define Host/Compile
 	cd $(HOST_BUILD_DIR) && \
-	  $(PYTHON) x.py -j4 --config ./config.toml dist
+	  $(PYTHON) x.py --config ./config.toml dist
 
 	$(call Host/PackageDist)
 endef
