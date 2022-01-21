@@ -84,6 +84,7 @@ RUST_COMMOM_ARGS := \
   --disable-docs \
   --enable-vendor \
   --set=llvm.download-ci-llvm="if-available" \
+  --disable-lld \
   --enable-missing-tools \
   --release-channel=nightly \
   ${MUSL_CONFIGURE_ARGS}
